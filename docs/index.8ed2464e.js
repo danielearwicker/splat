@@ -2,5 +2,5 @@ const e=document.querySelector("#input"),t=document.querySelector("#output"),n=d
 beatles/2-she-loves-you.mp3
 beatles/3-paperback-writer.mp3
 kinks/1-sunny-afternoon.mp3
-kinks/2-waterloo-sunset.mp3`,n.value="([a-z]+)/(\\d\\d)-([a-z-]+).mp3",r.value="artist ${1} track ${2:00} title ${3}",e.addEventListener("input",l),n.addEventListener("input",l),r.addEventListener("input",l),l();
-//# sourceMappingURL=index.8daac781.js.map
+kinks/2-waterloo-sunset.mp3`,n.value="([a-z]+)/(\\d+)-([a-z-]+).mp3",r.value="artist ${1} track ${2:00} title ${3}",e.addEventListener("input",l),n.addEventListener("input",l),r.addEventListener("input",l),l();
+//# sourceMappingURL=index.8ed2464e.js.map

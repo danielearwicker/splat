@@ -10,7 +10,7 @@ beatles/3-paperback-writer.mp3
 kinks/1-sunny-afternoon.mp3
 kinks/2-waterloo-sunset.mp3`;
 
-regex.value = "([a-z]+)/(\\d\\d)-([a-z-]+).mp3";
+regex.value = "([a-z]+)/(\\d+)-([a-z-]+).mp3";
 
 template.value = "artist ${1} track ${2:00} title ${3}";
 
