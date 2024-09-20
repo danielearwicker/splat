@@ -1,0 +1,13 @@
+{
+    "name": "splat",
+    "version": "1.0.0",
+    "license": "MIT",
+    "dependencies": {
+        "parcel": "^2.12.0",
+        "typescript": "^5.6.2"
+    },
+    "scripts": {
+        "start": "parcel index.html",
+        "build": "rm -rf docs && rm -rf .parcel-cache && parcel build --dist-dir docs --public-url /splat index.html"
+    }
+}

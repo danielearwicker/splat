@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Splat</title>
+        <style>
+            html,
+            body {
+                height: 100%;
+                overflow: hidden;
+                margin: 0;
+                font-family: Arial, Helvetica, sans-serif;
+                background-color: black;
+            }
+            .container {
+                position: absolute;
+                inset: 8px;
+                overflow: hidden;
+            }
+            .panel {
+                display: flex;
+                flex: 1 1 auto;
+                border: 1px solid rgb(131, 114, 226);
+                border-radius: 8px;
+                padding: 8px;
+                gap: 8px;
+            }
+            .title {
+                flex: 0 0 auto;
+                color: rgb(167, 153, 248);
+                text-align: center;
+                font-size: 0.8em;
+            }
+            .content {
+                flex: 1 1 auto;
+                position: relative;
+            }
+            .column,
+            .row {
+                display: flex;
+                gap: 8px;
+            }
+            .column {
+                flex-direction: column;
+                height: 100%;
+            }
+            .row {
+                flex-direction: row;
+                align-items: center;
+            }
+            textarea {
+                width: 100%;
+                height: 100%;
+                border: none;
+            }
+            input {
+                width: 100%;
+                height: 100%;
+                border: none;
+            }
+            .panel {
+                background-color: rgb(58, 49, 110);
+            }
+            input,
+            textarea {
+                background-color: transparent;
+                color: white;
+                resize: none;
+                padding: 0;
+                margin: 0;
+                position: absolute;
+            }
+            .error {
+                background-color: rgb(117, 47, 22);
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="column">
+                <div class="panel">
+                    <div class="title">input</div>
+                    <div class="content">
+                        <textarea id="input"></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="panel" id="regex-panel">
+                        <div class="title">regex</div>
+                        <div class="content">
+                            <input id="regex" />
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <div class="title">template</div>
+                        <div class="content">
+                            <input id="template" />
+                        </div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <div class="title">output</div>
+                    <div class="content">
+                        <textarea id="output"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="index.ts"></script>
+    </body>
+</html>
