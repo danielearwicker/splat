@@ -1,0 +1,5 @@
+const e=document.querySelector("#input"),t=document.querySelector("#output"),n=document.querySelector("#regex"),r=document.querySelector("#template"),u=document.querySelector("#regex-panel");function a(){try{let a=new RegExp(n.value),l=r.value.split(/\$\{([\d:]+)\}/g).map((e,t)=>(function(e,t){if(t)return()=>e;let n=e.indexOf(":");if(-1===n)return t=>t[e];let r=e.substring(0,n),u=e.substring(n+1);return e=>{let t=e[r];return u.substring(0,u.length-t.length)+t}})(e,t%2==0));t.value=e.value.split("\n").filter(e=>e.trim()).map(e=>{let t=a.exec(e);return t?l.map(e=>e(t)).join(""):""}).join("\n"),u.className="panel"}catch(e){u.className="panel error",t.value=e.message}}e.value=`Amazing Show 3x09.mkv
+Amazing Show 3x10.mkv
+Amazing Show 4x01.mkv
+Amazing Show 4x02.mkv`,n.value="0?(\\d+)x0?(\\d+).mkv",r.value="Amazing Show s${1:00}e${2:00} Season ${1} Episode ${2}.mkv",e.addEventListener("input",a),n.addEventListener("input",a),r.addEventListener("input",a),a();
+//# sourceMappingURL=index.de4ec129.js.map

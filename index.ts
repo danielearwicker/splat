@@ -4,15 +4,14 @@ const regex = document.querySelector("#regex") as HTMLInputElement;
 const template = document.querySelector("#template") as HTMLInputElement;
 const regexPanel = document.querySelector("#regex-panel") as HTMLDivElement;
 
-input.value = `beatles/1-love-me-do.mp3
-beatles/2-she-loves-you.mp3
-beatles/3-paperback-writer.mp3
-kinks/1-sunny-afternoon.mp3
-kinks/2-waterloo-sunset.mp3`;
+input.value = `Amazing Show 3x09.mkv
+Amazing Show 3x10.mkv
+Amazing Show 4x01.mkv
+Amazing Show 4x02.mkv`;
 
-regex.value = "([a-z]+)/(\\d+)-([a-z-]+).mp3";
+regex.value = "0?(\\d+)x0?(\\d+).mkv";
 
-template.value = "artist ${1} track ${2:00} title ${3}";
+template.value = "Amazing Show s${1:00}e${2:00} Season ${1} Episode ${2}.mkv";
 
 function compile(part: string, plain: boolean) {
     if (plain) {
