@@ -130,13 +130,9 @@ function generateTemplateRef(variants: string[], index: number) {
 
 export function generateTemplateFromSummary(summary: string[][]) {
     let i = 0;
-    return (
-        "mv '${0}' '" +
-        summary
-            .map((s) => (s.length == 1 ? s[0] : generateTemplateRef(s, ++i)))
-            .join("") +
-        "'"
-    );
+    return summary
+        .map((s) => (s.length == 1 ? s[0] : generateTemplateRef(s, ++i)))
+        .join("");
 }
 
 function configure() {
