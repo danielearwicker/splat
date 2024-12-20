@@ -2,15 +2,13 @@ const input = document.querySelector("#input") as HTMLTextAreaElement;
 const output = document.querySelector("#output") as HTMLTextAreaElement;
 const regex = document.querySelector("#regex") as HTMLInputElement;
 const template = document.querySelector("#template") as HTMLInputElement;
+const mode = document.querySelector("#mode") as HTMLSelectElement;
 const regexPanel = document.querySelector("#regex-panel") as HTMLDivElement;
 
 input.value = `Amazing Show 3x09.mkv
 Amazing Show 3x10.mkv
 Amazing Show 4x01.mkv
 Amazing Show 4x02.mkv`;
-
-// regex.value = "0?(\\d+)x0?(\\d+).mkv";
-// template.value = "Amazing Show s${1:00}e${2:00} Season ${1} Episode ${2}.mkv";
 
 function pushAll<T>(target: T[], source: T[]) {
     for (const i of source) {
@@ -130,9 +128,15 @@ function generateTemplateRef(variants: string[], index: number) {
 
 export function generateTemplateFromSummary(summary: string[][]) {
     let i = 0;
-    return summary
+    const same = summary
         .map((s) => (s.length == 1 ? s[0] : generateTemplateRef(s, ++i)))
         .join("");
+
+    if (mode.value === "mv") {
+        return `mv '${escapeQuotes(same)}' '${escapeQuotes(same)}'`;
+    }
+
+    return same;
 }
 
 function configure() {
@@ -147,6 +151,15 @@ function configure() {
     update();
 }
 
+const escapeQuotePattern = /'/g;
+
+function escapeQuotes(str: string) {
+    if (mode.value === "mv") {
+        return str.replaceAll(escapeQuotePattern, "'\\''");
+    }
+    return str;
+}
+
 function compile(part: string, plain: boolean) {
     if (plain) {
         return () => part;
@@ -154,24 +167,19 @@ function compile(part: string, plain: boolean) {
 
     const colon = part.indexOf(":");
     if (colon === -1) {
-        return (m: RegExpExecArray) => m[part];
+        return (m: RegExpExecArray) => escapeQuotes(m[part]);
     }
 
     const index = part.substring(0, colon);
     const pattern = part.substring(colon + 1);
 
     return (m: RegExpExecArray) => {
-        const value = m[index];
+        const value = escapeQuotes(m[index]);
         return pattern.substring(0, pattern.length - value.length) + value;
     };
 }
 
 function update() {
-    // output.value = summarise(
-    //     input.value.split("\n").filter((line) => line.trim())
-    // ).join("\n");
-    // return;
-
     try {
         const r = new RegExp(regex.value);
 
@@ -199,5 +207,6 @@ function update() {
 input.addEventListener("input", configure);
 regex.addEventListener("input", update);
 template.addEventListener("input", update);
+mode.addEventListener("change", configure);
 
 configure();

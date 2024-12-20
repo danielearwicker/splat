@@ -16,13 +16,20 @@
                 inset: 8px;
                 overflow: hidden;
             }
-            .panel {
+            .panel,
+            .mini-panel {
                 display: flex;
-                flex: 1 1 auto;
                 border: 1px solid rgb(131, 114, 226);
+                background-color: rgb(58, 49, 110);
                 border-radius: 8px;
                 padding: 8px;
                 gap: 8px;
+            }
+            .panel {
+                flex: 1 1 auto;
+            }
+            .mini-panel {
+                flex: 0 0 auto;
             }
             .title {
                 flex: 0 0 auto;
@@ -57,9 +64,6 @@
                 height: 100%;
                 border: none;
             }
-            .panel {
-                background-color: rgb(58, 49, 110);
-            }
             input,
             textarea {
                 background-color: transparent;
@@ -89,6 +93,12 @@
                         <div class="content">
                             <input id="regex" />
                         </div>
+                    </div>
+                    <div class="mini-panel">
+                        <select id="mode">
+                            <option>same</option>
+                            <option selected>mv</option>
+                        </select>
                     </div>
                     <div class="panel">
                         <div class="title">template</div>
