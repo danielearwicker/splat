@@ -114,29 +114,24 @@ export function generateRegexFromSummary(summary: string[][]) {
     );
 }
 
-function generateTemplateRef(variants: string[], index: number) {
-    if (allDigits(variants)) {
-        const length = variants
-            .map((x) => x.length)
-            .reduce((l, r) => Math.max(l, r));
-        const pattern = "0".repeat(length);
-        return "${" + index + ":" + pattern + "}";
-    }
-
-    return "${" + index + "}";
+function generateTemplateRef(index: number) {
+    const kind = mode.value === "mv" ? "q" : "m";
+    const ref = kind + "[" + index + "]";
+    return "${" + ref + "}";
 }
 
 export function generateTemplateFromSummary(summary: string[][]) {
     let i = 0;
-    const same = summary
-        .map((s) => (s.length == 1 ? s[0] : generateTemplateRef(s, ++i)))
+
+    let tmpl = summary
+        .map((s) => (s.length == 1 ? s[0] : generateTemplateRef(++i)))
         .join("");
 
     if (mode.value === "mv") {
-        return `mv '${escapeQuotes(same)}' '${escapeQuotes(same)}'`;
+        return "`mv '" + tmpl + "' '" + tmpl + "'`";
     }
 
-    return same;
+    return "`" + tmpl + "`";
 }
 
 function configure() {
@@ -153,39 +148,15 @@ function configure() {
 
 const escapeQuotePattern = /'/g;
 
-function escapeQuotes(str: string) {
-    if (mode.value === "mv") {
-        return str.replaceAll(escapeQuotePattern, "'\\''");
-    }
-    return str;
-}
-
-function compile(part: string, plain: boolean) {
-    if (plain) {
-        return () => part;
-    }
-
-    const colon = part.indexOf(":");
-    if (colon === -1) {
-        return (m: RegExpExecArray) => escapeQuotes(m[part]);
-    }
-
-    const index = part.substring(0, colon);
-    const pattern = part.substring(colon + 1);
-
-    return (m: RegExpExecArray) => {
-        const value = escapeQuotes(m[index]);
-        return pattern.substring(0, pattern.length - value.length) + value;
-    };
+function compile(tmpl: string): (m: RegExpExecArray, q: string[]) => string {
+    return (m, q) => new Function("m", "q", "return " + tmpl)(m, q);
 }
 
 function update() {
     try {
         const r = new RegExp(regex.value);
 
-        const parts = template.value
-            .split(/\$\{([\d:]+)\}/g)
-            .map((p, i) => compile(p, i % 2 === 0));
+        const compiled = compile(template.value);
 
         output.value = input.value
             .split("\n")
@@ -193,7 +164,10 @@ function update() {
             .map((line) => {
                 const m = r.exec(line);
                 if (!m) return "";
-                return parts.map((p) => p(m)).join("");
+                const q = Array.from(m).map((x) =>
+                    x.replaceAll(escapeQuotePattern, "'\\''")
+                );
+                return compiled(m, q);
             })
             .join("\n");
 
